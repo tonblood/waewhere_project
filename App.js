@@ -7,6 +7,8 @@ import { getAuth } from 'firebase/auth';
 import { Provider as PaperProvider, Card, List, Button } from 'react-native-paper';
 import Constants from 'expo-constants';
 
+import Page1Screen from './page1';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyCsfPlHclKn8gSDVset0aQFdpnS98GaJ9c",
@@ -35,9 +37,13 @@ function Loading() {
   return <View><Text>Loading</Text></View>
 }
 
-export default function App() {
-  const [user, setUser] = React.useState(null);
 
+export default function App() {
+  var page = 0;
+  const [user, setUser] = React.useState(null);
+  if (page==1){
+    return <Page1Screen/>;
+  }
   return (
     <PaperProvider>
       <View style={styles.container}>
@@ -47,7 +53,7 @@ export default function App() {
           
 
           <Card.Content style={styles.bodymenu}>
-            <Button style={styles.menu}>สระพลาสติก</Button>
+            <Button style={styles.menu} onPress={() => page==1}>สระพลาสติก</Button>
             <Button style={styles.menu}>บึงสีฐาน</Button>
             <Button style={styles.menu}>สนามกีฬาใกล้ตลาดมอ</Button>
             <Button style={styles.menu}>สนามบาส 4 สนาม</Button>
@@ -59,9 +65,11 @@ export default function App() {
         </Card>
         <StatusBar style="auto" />
       </View>
+      
     </PaperProvider>
+    
   );
-
+    
 }
 
 const styles = StyleSheet.create({
