@@ -6,8 +6,7 @@ import { getDatabase, ref, onValue, set } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 import { Provider as PaperProvider, Card, List, Button } from 'react-native-paper';
 import Constants from 'expo-constants';
-
-import Page1Screen from './page1';
+import LoginScreen from './Login';
 
 
 const firebaseConfig = {
@@ -37,39 +36,46 @@ function Loading() {
   return <View><Text>Loading</Text></View>
 }
 
-
 export default function App() {
-  var page = 0;
+  var auth = getAuth();
+  auth.onAuthStateChanged(function (us) {
+    setUser(us);
+  });
   const [user, setUser] = React.useState(null);
-  if (page==1){
-    return <Page1Screen/>;
+
+  if (user == null) {
+    return <LoginScreen />;
   }
+
   return (
     <PaperProvider>
       <View style={styles.container}>
 
         <Card>
-          <Card.Cover source={require("./assets/Logo-Home.png")}/>
-          
+          <Card.Cover source={require("./assets/Logo-Home.png")} />
+
 
           <Card.Content style={styles.bodymenu}>
-            <Button style={styles.menu} onPress={() => page==1}>สระพลาสติก</Button>
+            <Button style={styles.menu} onclick="window.location.href='work5.html'">สระพลาสติก</Button>
             <Button style={styles.menu}>บึงสีฐาน</Button>
             <Button style={styles.menu}>สนามกีฬาใกล้ตลาดมอ</Button>
             <Button style={styles.menu}>สนามบาส 4 สนาม</Button>
             <Button style={styles.menu}>สปอร์ตคอมเพล็ก</Button>
-            
+
           </Card.Content>
-          
-          <Card.Cover source={require("./assets/map.png")}/>
+
+          <Card.Cover source={require("./assets/map.png")} />
+          <Button icon="logout" onPress={() => getAuth().signOut()} style={styles.out}>
+            Sign Out
+          </Button>
         </Card>
-        <StatusBar style="auto" />
+
+        <StatusBar backgroundColor="rgba(0,0,0,0.5)" style="light" />
+
       </View>
-      
     </PaperProvider>
-    
   );
-    
+
 }
 
 const styles = StyleSheet.create({
@@ -78,24 +84,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingTop: Constants.statusBarHeight,
   },
-  // text: {
-  //   flex: 1,
-  //   backgroundColor: '#FBE9DD',
-  //   textAlign :"center"
-    
-  // },
+  out: {
+    backgroundColor: '#CF8083'
+  },
   menu: {
-    height : '13%',
-    marginTop : '5%',
-    paddingTop : '2.2%',
-    marginLeft : "10%",
-    marginRight : "10%",
+    height: '13%',
+    marginTop: '5.2%',
+    paddingTop: '2%',
+    marginLeft: "10%",
+    marginRight: "10%",
     backgroundColor: '#5CA6B5'
   },
   bodymenu: {
-    paddingTop : '10%',
-    height : '54%',
-    alignContent :"center",
+    paddingTop: '5%',
+    height: '49.8%',
+    alignContent: "center",
     backgroundColor: '#FDF6F1'
   }
 });
